@@ -11,7 +11,12 @@ function checkCredentials(email, password) {
     console.log(query, params);
     return db.run2(query, params).then(function (result) {
         console.log('ya porfavor ', result);
-        return result;
+        if (result[0].password != password) {
+            return null;
+        }
+        else {
+            return result;
+        }
     })
         .catch(function (err) {
         console.log('hubo error user dao login catch');

@@ -2,6 +2,7 @@ import * as express from 'express';
 // import * as userDAO from '../dao/UserDao';
 // import  {UserModel} from '../model/UserModel';
 import   * as  userModel  from '../model/UserModel';
+import   {ErrorModel}  from '../model/ErrorModel';
 import * as userDAO from '../dao/UserDao';
 
 // var nodemailer = require('nodemailer');
@@ -11,23 +12,10 @@ import * as userDAO from '../dao/UserDao';
 export var router:express.Router = express.Router();
 
 
-
-// router.get('/login', function(req, res, next) {
-//   console.log('llegamos hasta aqui');
-//   // var userModel2:any= new UserModel();
-//   var userModel2:any= new userModel.UserModel();
-
-
-//   	userModel2.name='Miguel2'
-//   	userModel2.password='Miguel222'
-//   	// userModel.name='Miguel Angel';
-//      res.statusCode = 200;
-//      res.send(userModel2);
-// });
-
 router.post('/login', function(req, res, next) {
   console.log('llegamos hasta aqui login');
   userDAO.checkCredentials(req.body.email,req.body.password).then(function(userModel:userModel.UserModel){
+  	console.log('sale de la funcion');
       if(userModel != null)
       {
          
@@ -36,12 +24,16 @@ router.post('/login', function(req, res, next) {
           res.send(userModel);
       }
       else{  
-          res.statusCode = 200;
-          res.send(false);
+          res.statusCode = 404;
+          var errorModel= new ErrorModel();
+          errorModel.code="404";
+          errorModel.message="User not Found";
+          res.send(errorModel);
       }
   })
     .catch(error => {
       res.statusCode = 500;
+      console.log(error);
       res.json(error);
     });
 

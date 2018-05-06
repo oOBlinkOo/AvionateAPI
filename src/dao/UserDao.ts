@@ -12,7 +12,12 @@ export function checkCredentials (email: string , password:string){
  
   return db.run2(query,params).then(result => {
     console.log ('ya porfavor ',result);
-    return result;
+    if(result[0].password!=password){
+      return null;
+    }else {
+      return result;  
+    }    
+    
     })
     .catch(function (err) {
       console.log ('hubo error user dao login catch');
