@@ -7,7 +7,7 @@ export function checkCredentials (email: string , password:string){
 
     var params = { email:email.toLowerCase() };
     var query :string = null;
- query = 'select * from usuarios where ?';
+ query = 'select * from heroku_77555f6c6fe7654.usuarios where ?';
   console.log (query,params);
  
   return db.run2(query,params).then(result => {

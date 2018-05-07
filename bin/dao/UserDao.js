@@ -7,7 +7,7 @@ var db = require("../services/dbProvider");
 function checkCredentials(email, password) {
     var params = { email: email.toLowerCase() };
     var query = null;
-    query = 'select * from usuarios where ?';
+    query = 'select * from heroku_77555f6c6fe7654.usuarios where ?';
     console.log(query, params);
     return db.run2(query, params).then(function (result) {
         console.log('ya porfavor ', result);
