@@ -26,6 +26,7 @@ var originsWhitelist = [
   //  'http://app.processtempo.com'
 ];
 
+
 var corsOptions = {
   origin: true,
   credentials:true
