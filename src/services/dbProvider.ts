@@ -2,57 +2,21 @@ var mysql = require('mysql');
 var Promise = require('promise');
 
 var pool = mysql.createPool({
-  host: 'us-cdbr-iron-east-04.cleardb.net',
-  user: 'b65a95432091c9',
-  password: '8c364631',
+  // host: 'us-cdbr-iron-east-04.cleardb.net',
+  // user: 'b65a95432091c9',
+  // password: '8c364631',
  // database: 'heroku_5addddbb07eeeed'
-   // host: 'localhost',
-   // user: 'root',
-   // password: '',
-   // database: 'viajes'
 
+   host: 'localhost',
+   user: 'root',
+   password: '',
+   database: 'viajes'
 
-  // NUEVA BD
-  // host: 'y0nkiij6humroewt.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
-  // user: 'x6m8w27waqcc3elj',
-  // password: 'cbu86c98cmh61zbr',
-  // database: 'tzhwb55vp1gmz5g8'
 
 }) ;
 
 
 
-// export function run(query: string, params?: any, callback ?: any)  {
-// var result = null;
-
-// connection.connect();
-
-// try {
-//   console.log('1');
-//   connection.query(query,params,function(err,rows,fields){
-//     console.log('2');
-//       if  (err) {
-//           console.error('error connecting: ' + err.stack);
-//           throw err;
-//         }
-//         result=rows;
-//         console.log('The solution is: ', result)
-//         console.log ('ni idea',err);
-//         // console.log ('ni fields',fields);
-//         callback(null,rows)
-//         // return rows;
-
-//       });
-// } catch (error) {
-//   console.log('3');
-//   console.log ('disable for testing waaat',error);
-//   connection.end();
-
-// }
-// console.log('4');
-// console.log('llego al final del metodo run',result);
-// return result;
-// }
 
 export function run2(query: string, params?: any)  {
   console.log('cauntas conexiones pasan?');
