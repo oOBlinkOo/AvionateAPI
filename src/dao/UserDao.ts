@@ -93,3 +93,87 @@ var query :string = null;
       });
 
 }
+
+
+export function crearTarjeta (id_user: string , numeroTarjeta:string,vigencia:string,cvv:string){
+
+       var params = [
+            id_user,
+            numeroTarjeta,
+            vigencia,
+            cvv            
+       ];
+      var query :string = null;
+   query = 'INSERT INTO `tarjeta` (`id_tarjeta`, `id_user`, `number_tarjeta`, `date_vigencia`, `cvv`)';
+   query = query + 'VALUES  (null,?,?,?,?)' ;
+
+    console.log (query,params);
+   
+    return db.run2(query,params).then(result => {
+      console.log ('ya porfavor ',result);
+     if(result != null){
+       console.log('el id es !!',result);
+       return result;
+     }else {
+       return null;
+     } 
+      })
+      .catch(function (err) {
+        console.log ('hubo error en el create tarjeta');
+        console.log(err);
+      });
+  }
+
+
+   export function  getTarjeta(user_id:string){
+  console.log('llegamos al dao de getList1',user_id);
+  // console.log('llegamos al dao de getList2',destino);
+  // console.log('llegamos al dao de getList3',timestart);
+  // console.log('llegamos al dao de getList4',tiemeend);
+  
+// SELECT * FROM `trip` WHERE 1
+ var params = [
+            user_id
+            
+       ];
+var query :string = null;
+   query = 'SELECT * FROM `tarjeta` WHERE ';
+   query = query+"id_user =?";
+  return db.run2(query,params).then(result => {
+      console.log ('result create trip',result);
+     if(result != null){
+       console.log('el id es !!',result);
+       return result;
+     }else {
+       return null;
+     }
+      })
+      .catch(function (err) {
+        console.log ('hubo error en el get list trip');
+      });
+
+}
+
+
+  export function updateUser (id_user: string , name:string, lastname:string, pass:string){
+
+        var params = [
+        name,
+        lastname,
+        pass,
+        id_user
+       ];
+      var query :string = null;
+   // query = 'select * from heroku_77555f6c6fe7654.usuarios where ?';
+   query = 'UPDATE usuarios set name = ? , lastname = ? , password = ? where id_user = ? ';
+    console.log (query,params);
+   
+    return db.run2(query,params).then(result => {
+      console.log ('ya porfavor ',result);
+      return result;
+      })
+      .catch(function (err) {
+        console.log ('hubo error user dao login catch');
+        console.log(err);
+      });
+  }
