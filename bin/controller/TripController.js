@@ -57,3 +57,75 @@ exports.router.get('/getList/:source/:destino/:start/:end/:plaza', function (req
         res.json(error);
     });
 });
+exports.router.get('/getFullCar/:id_trip', function (req, res, next) {
+    console.log('llegamos hasta el getlist del trip', req.params);
+    // res.send(req.params);
+    tripDao.getFullCar(req.params.id_trip).then(function (userModel) {
+        console.log('sale de la funcion', userModel);
+        if (userModel != null) {
+            res.statusCode = 200;
+            console.log(userModel);
+            res.send(userModel);
+        }
+        else {
+            res.statusCode = 404;
+            var errorModel = new ErrorModel_1.ErrorModel();
+            errorModel.code = "404";
+            errorModel.message = "Trip not Found";
+            res.send(errorModel);
+        }
+    })
+        .catch(function (error) {
+        res.statusCode = 500;
+        console.log(error);
+        res.json(error);
+    });
+});
+exports.router.get('/getListbyUser/:id_user', function (req, res, next) {
+    console.log('llegamos hasta el getlist del trip', req.params);
+    // res.send(req.params);
+    tripDao.getListByUser(req.params.id_user).then(function (userModel) {
+        console.log('sale de la funcion', userModel);
+        if (userModel != null) {
+            res.statusCode = 200;
+            console.log(userModel);
+            res.send(userModel);
+        }
+        else {
+            res.statusCode = 404;
+            var errorModel = new ErrorModel_1.ErrorModel();
+            errorModel.code = "404";
+            errorModel.message = "Trip not Found";
+            res.send(errorModel);
+        }
+    })
+        .catch(function (error) {
+        res.statusCode = 500;
+        console.log(error);
+        res.json(error);
+    });
+});
+exports.router.get('/closeTrip/:id_trip', function (req, res, next) {
+    console.log('llegamos hasta el getlist del trip', req.params);
+    // res.send(req.params);
+    tripDao.closeTrip(req.params.id_trip).then(function (userModel) {
+        console.log('sale de la funcion', userModel);
+        if (userModel != null) {
+            res.statusCode = 200;
+            console.log(userModel);
+            res.send(userModel);
+        }
+        else {
+            res.statusCode = 404;
+            var errorModel = new ErrorModel_1.ErrorModel();
+            errorModel.code = "404";
+            errorModel.message = "Trip not Found";
+            res.send(errorModel);
+        }
+    })
+        .catch(function (error) {
+        res.statusCode = 500;
+        console.log(error);
+        res.json(error);
+    });
+});

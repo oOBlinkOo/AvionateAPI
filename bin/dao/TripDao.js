@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var db = require("../services/dbProvider");
+var global = [];
 function createTrip(id_user, source, destino, sourcelat, sourcelng, destinolat, destinolng, asientos, fecha, status, precio, precioComision, primerpick, segundopick) {
     var testDate = new Date(fecha);
     console.log('FECHAPLZ3', fecha);
@@ -101,33 +102,82 @@ function pickup(primerpick, segundopick, resultInitial) {
 //                req.body.timestart,
 //                req.body.tiemeend
 function getList(source, destino, timestart, tiemeend, plaza) {
-    console.log('llegamos al dao de getList1', source);
-    console.log('llegamos al dao de getList2', destino);
-    console.log('llegamos al dao de getList3', timestart);
-    console.log('llegamos al dao de getList4', tiemeend);
     // SELECT * FROM `trip` WHERE 1
     var params = [
         source,
         destino,
         tiemeend,
-        timestart,
-        plaza
+        timestart
     ];
+    var arraytoReturn = [];
     var query = null;
     query = 'SELECT * FROM `trip` WHERE ';
-    query = query + "source=? and destino = ? and status='OPEN' and hora< ? and hora> ? and plaza = ?";
+    // query = query+"source=? and destino = ? and status='OPEN' and hora< ? and hora> ? and plaza = ?";
+    query = query + "source=? and destino = ? and status='OPEN' and hora< ? and hora> ? ";
     return db.run2(query, params).then(function (result) {
-        console.log('result create trip', result);
-        if (result != null) {
-            console.log('el id es !!', result);
-            return result;
-        }
-        else {
-            return null;
-        }
+        return result;
+        // console.log ('result create trip',result);
+        // var x = new ErrorModel();
+        // // x.message='test';
+        // // x.code='no';
+        // // return x;
+        //     return continuefunction(result,plaza);
     })
         .catch(function (err) {
-        console.log('hubo error en el get list trip');
+        console.log('hubo error en el get list 1 trip');
     });
 }
 exports.getList = getList;
+function getListByUser(id_user) {
+    // SELECT * FROM `trip` WHERE 1
+    var params = [
+        id_user,
+        "OPEN"
+    ];
+    var arraytoReturn = [];
+    var query = null;
+    query = 'SELECT * FROM `trip` WHERE ';
+    query = query + "id_user = ? and status = ?";
+    return db.run2(query, params).then(function (result) {
+        return result;
+    })
+        .catch(function (err) {
+        console.log('hubo error en el get list 1 trip');
+    });
+}
+exports.getListByUser = getListByUser;
+function getFullCar(id_trip) {
+    // SELECT * FROM `trip` WHERE 1
+    var params = [
+        id_trip,
+        "OPEN"
+    ];
+    var arraytoReturn = [];
+    var query3 = null;
+    query3 = 'SELECT * FROM `viajesporuser` WHERE ';
+    query3 = query3 + "id_trip =? and status = ?";
+    return db.run2(query3, params).then(function (result) {
+        return result;
+    })
+        .catch(function (err) {
+        console.log('hubo error en el get list 1 trip');
+    });
+}
+exports.getFullCar = getFullCar;
+function closeTrip(id_trip) {
+    // query = 'UPDATE usuarios set name = ? , lastname = ? , password = ? where id_user = ? ';
+    // SELECT * FROM `trip` WHERE 1
+    var params = [
+        id_trip,
+    ];
+    var arraytoReturn = [];
+    var query3 = null;
+    query3 = "UPDATE  trip set status = 'CLOSE' WHERE id_trip = ?";
+    return db.run2(query3, params).then(function (result) {
+        return result;
+    })
+        .catch(function (err) {
+        console.log('hubo error en el get list 1 trip');
+    });
+}
+exports.closeTrip = closeTrip;

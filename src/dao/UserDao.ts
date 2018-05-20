@@ -3,6 +3,7 @@
   // var passwordHash = require('password-hash');
   // var uuid = require('uuid');
   import {ErrorModel} from '../model/ErrorModel';
+  import {SuccesModel} from '../model/SuccesModel';
 
   export function checkCredentials (email: string , password:string){
 
@@ -126,12 +127,6 @@ export function crearTarjeta (id_user: string , numeroTarjeta:string,vigencia:st
 
 
    export function  getTarjeta(user_id:string){
-  console.log('llegamos al dao de getList1',user_id);
-  // console.log('llegamos al dao de getList2',destino);
-  // console.log('llegamos al dao de getList3',timestart);
-  // console.log('llegamos al dao de getList4',tiemeend);
-  
-// SELECT * FROM `trip` WHERE 1
  var params = [
             user_id
             
@@ -152,8 +147,7 @@ var query :string = null;
         console.log ('hubo error en el get list trip');
       });
 
-}
-
+}  
 
   export function updateUser (id_user: string , name:string, lastname:string, pass:string){
 
@@ -176,4 +170,165 @@ var query :string = null;
         console.log ('hubo error user dao login catch');
         console.log(err);
       });
+  }
+
+
+export function activarCuenta (id_user: string , flag:string){
+
+        var params = [
+        flag,
+        id_user
+       ];
+      var query :string = null;
+   // query = 'select * from heroku_77555f6c6fe7654.usuarios where ?';
+   query = 'UPDATE usuarios set member_active = ? where id_user = ? ';
+    console.log (query,params);
+   
+    return db.run2(query,params).then(result => {
+      console.log ('ya porfavor ',result);
+      return result;
+      })
+      .catch(function (err) {
+        console.log ('hubo error user dao login catch');
+        console.log(err);
+      });
+  }
+
+
+
+   export function  deleteTarjeta(user_id:string){
+  console.log('llegamos al dao de getList1',user_id);
+ var params = [
+            user_id
+            
+       ];
+var query :string = null;
+   query = 'DELETE FROM `tarjeta` WHERE ';
+   query = query+"id_user =?";
+  return db.run2(query,params).then(result => {
+      console.log ('result create trip',result);
+     if(result != null){
+       console.log('el id es !!',result);
+       return result;
+     }else {
+       return null;
+     }
+      })
+      .catch(function (err) {
+        console.log ('hubo error en el get list trip');
+      });
+
+}  
+
+
+   export function  getPicks(id_pick:string){
+ var params = [
+            id_pick
+            
+       ];
+var query :string = null;
+   query = 'SELECT * FROM `pickup` WHERE ';
+   query = query+"id_trip =?";
+  return db.run2(query,params).then(result => {
+      console.log ('result create trip',result);
+     if(result != null){
+       console.log('el id es !!',result);
+       return result;
+     }else {
+       return null;
+     }
+      })
+      .catch(function (err) {
+        console.log ('hubo error en el get list trip');
+      });
+
+}  
+
+
+
+
+export function reservar (id_trip: string , id_user:string,id_pick:string,plaza:string,plazaUsuario:string){
+
+var query: string =null;
+   query = 'SELECT * FROM `viajesporuser` WHERE ';
+   query = query+"id_trip =? and status = ?";
+
+   var status='OPEN';
+
+      var params = [
+        id_trip,
+        status
+       ];
+
+        return db.run2(query,params).then(result => {
+      console.log ('consultamos si existen datos o no',result);
+           if(result.length==0) {
+             console.log('esta vacio');
+                  var params2 = [
+                                id_trip,
+                                id_user,
+                                id_pick,
+                                status,
+                                plazaUsuario
+                                
+                               ];
+              var query2: string =null;
+                    query2 = 'INSERT INTO `viajesporuser` (`id`, `id_trip`, `id_user`, `id_pick`, `status` ,`plazaOcupada`)';
+                    query2 = query2 + 'VALUES  (null,?,?,?,?,?)' ;
+                    console.log('esta vacio2');
+                      return db.run2(query2,params2).then(result => {
+                              console.log('esta vacio3');
+                                  return result;
+                              })
+                              .catch(function (err) {
+                                console.log ('hubo error en el get 1 list trip');
+                              });
+
+           }else {
+             console.log('ya veremos luego',result);
+               for (var i = 0; i < result.length; ++i) {
+                   if (result[i].id_user==id_user){
+                     var object=new ErrorModel();
+                      object.code='409' ;
+                      object.message='Usuario ya registrado a ese viaje' ;
+                     return object;
+                   }
+               }
+
+               if(result.length==plaza){
+                 var object=new ErrorModel();
+                                      object.code='409' ;
+                                      object.message='Auto Lleno busca otro' ;
+                                     return object;
+               }
+
+                    var params3 = [
+                                id_trip,
+                                id_user,
+                                id_pick,
+                                status,
+                                plazaUsuario
+                               ];
+              var query3: string =null;
+                    query3 = 'INSERT INTO `viajesporuser` (`id`, `id_trip`, `id_user`, `id_pick`, `status` ,`plazaOcupada`)';
+                    query3 = query3 + 'VALUES  (null,?,?,?,?,?)' ;
+                      return db.run2(query3,params3).then(result => {
+                                  return result;
+                              })
+                              .catch(function (err) {
+                                console.log ('hubo error en el proceso');
+                              });
+
+
+
+
+
+           }
+      })
+      .catch(function (err) {
+        console.log ('hubo error en el reservar ');
+      });
+
+
+  
   }

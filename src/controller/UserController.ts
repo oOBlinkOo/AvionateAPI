@@ -195,3 +195,127 @@ router.post('/updateUser', function(req, res, next) {
 
 
 });
+
+router.post('/activarCuenta', function(req, res, next) {
+  console.log('llegamos hasta aqui login');
+  userDAO.activarCuenta(req.body.id_user,req.body.active).then(function(userModel:userModel.UserModel){
+    console.log('sale de la funcion');
+      if(userModel != null)
+      {
+         
+          res.statusCode = 200;
+          console.log(userModel);
+          res.send(userModel);
+      }
+      else{  
+          res.statusCode = 404;
+          var errorModel= new ErrorModel();
+          errorModel.code="404";
+          errorModel.message="User not Found";
+          res.send(errorModel);
+      }
+  })
+    .catch(error => {
+      res.statusCode = 500;
+      console.log(error);
+      res.json(error);
+    });
+
+
+});
+
+
+router.get('/deleteCards/:id_user', function(req, res, next) {
+  console.log('llegamos hasta el delete CARDS',req.params);
+  
+// res.send(req.params);
+  userDAO.deleteTarjeta(
+                req.params.id_user                     
+
+    ).then(function(userModel:any){
+    console.log('sale de la funcion',userModel);
+      if(userModel != null)
+      {
+         
+          res.statusCode = 200;
+          console.log(userModel);
+          res.send(userModel);
+      }
+      else{  
+          res.statusCode = 404;
+          var errorModel= new ErrorModel();
+          errorModel.code="404";
+          errorModel.message="Tarjeta Not Found";
+          res.send(errorModel);
+      }
+  })
+    .catch(error => {
+      res.statusCode = 500;
+      console.log(error);
+      res.json(error);
+    });
+
+
+});
+
+router.get('/getPicks/:id_pick', function(req, res, next) {
+  console.log('llegamos hasta el getlist del trip',req.params);
+  
+// res.send(req.params);
+  userDAO.getPicks(
+                req.params.id_pick                     
+
+    ).then(function(userModel:any){
+    console.log('sale de la funcion',userModel);
+      if(userModel != null)
+      {
+         
+          res.statusCode = 200;
+          console.log(userModel);
+          res.send(userModel);
+      }
+      else{  
+          res.statusCode = 404;
+          var errorModel= new ErrorModel();
+          errorModel.code="404";
+          errorModel.message="Picks Not Found";
+          res.send(errorModel);
+      }
+  })
+    .catch(error => {
+      res.statusCode = 500;
+      console.log(error);
+      res.json(error);
+    });
+
+
+});
+
+
+router.post('/reservar', function(req, res, next) {
+  userDAO.reservar(req.body.id_trip,req.body.id_user,req.body.id_pick,req.body.plaza,req.body.plazaUsuario).then(function(userModel:userModel.UserModel){
+    console.log('sale de la funcion');
+      if(userModel != null)
+      {
+         
+          res.statusCode = 200;
+          console.log('respuesta con 200',userModel);
+          res.send(userModel);
+      }
+      else{  
+          res.statusCode = 404;
+          var errorModel= new ErrorModel();
+          errorModel.code="404";
+          errorModel.message="User not Found";
+          res.send(errorModel);
+      }
+  })
+    .catch(error => {
+      res.statusCode = 500;
+      console.log(error);
+      res.json(error);
+    });
+
+
+});
+
