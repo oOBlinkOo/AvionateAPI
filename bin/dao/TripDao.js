@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var db = require("../services/dbProvider");
-var global = [];
+var global = 'heroku_77555f6c6fe7654.';
 function createTrip(id_user, source, destino, sourcelat, sourcelng, destinolat, destinolng, asientos, fecha, status, precio, precioComision, primerpick, segundopick) {
     var testDate = new Date(fecha);
     console.log('FECHAPLZ3', fecha);
@@ -21,7 +21,7 @@ function createTrip(id_user, source, destino, sourcelat, sourcelng, destinolat, 
         precioComision
     ];
     var query = null;
-    query = 'INSERT INTO `trip`(`id_trip`, `id_user`, `source`, `destino`, `sourcePlaceLat`, `destinoPlaceLat`, `sourcePlaceLng`, `destinoPlaceLng`, `plaza`, `hora`, `status`, `costo`, `costoComision`)';
+    query = 'INSERT INTO ' + global + '`trip`(`id_trip`, `id_user`, `source`, `destino`, `sourcePlaceLat`, `destinoPlaceLat`, `sourcePlaceLng`, `destinoPlaceLng`, `plaza`, `hora`, `status`, `costo`, `costoComision`)';
     query = query + 'VALUES  (null,?,?,?,?,?,?,?,?,?,?,?,?)';
     //     var query2 :string = null;
     // query2 = 'INSERT INTO `pickup`(`id_pick`, `id_trip`, `localization`) ';
@@ -45,30 +45,13 @@ function createTrip(id_user, source, destino, sourcelat, sourcelng, destinolat, 
     });
 }
 exports.createTrip = createTrip;
-//   function givemeFormatDate(newDate:Date){
-//   var formatDateCorrect:string=null;
-//     newDate.getDate();
-//   newDate.getMonth();
-//   newDate.getFullYear();
-//   newDate.getHours();
-//   newDate.getMinutes();
-//   console.log('MUEREEEEEEEEE'+newDate.getFullYear());
-//   console.log('MUEREEEEEEEEE'+newDate.getMonth());
-//   console.log('MUEREEEEEEEEE'+newDate.getDate());
-//   console.log('MUEREEEEEEEEE'+newDate.getHours());
-//   console.log('MUEREEEEEEEEE'+newDate.getMinutes());
-//   formatDateCorrect=newDate.getFullYear()+'-'+newDate.getMonth()+'-'+newDate.getDate()+' '+
-//         newDate.getHours()+':'+newDate.getMinutes()+':'+newDate.getSeconds();
-//         console.log('nuevo formato del date',formatDateCorrect);
-//     return formatDateCorrect.toString();
-// }
 function pickup(primerpick, segundopick, resultInitial) {
     console.log('prueba de pick up !!!!' + resultInitial);
     console.log('prueba de pick up !!!!' + resultInitial.insertId);
     for (var i = 0; i < 2; ++i) {
         console.log('prueba de pick up gg', i);
         var query2 = null;
-        query2 = 'INSERT INTO `pickup`(`id_pick`, `id_trip`, `localization`) ';
+        query2 = 'INSERT INTO ' + global + '`pickup`(`id_pick`, `id_trip`, `localization`) ';
         query2 = query2 + 'VALUES  (null,?,?)';
         var parameterToinsert = null;
         if (i == 0) {
@@ -111,7 +94,7 @@ function getList(source, destino, timestart, tiemeend, plaza) {
     ];
     var arraytoReturn = [];
     var query = null;
-    query = 'SELECT * FROM `trip` WHERE ';
+    query = 'SELECT * FROM ' + global + '`trip` WHERE ';
     // query = query+"source=? and destino = ? and status='OPEN' and hora< ? and hora> ? and plaza = ?";
     query = query + "source=? and destino = ? and status='OPEN' and hora< ? and hora> ? ";
     return db.run2(query, params).then(function (result) {
@@ -136,7 +119,7 @@ function getListByUser(id_user) {
     ];
     var arraytoReturn = [];
     var query = null;
-    query = 'SELECT * FROM `trip` WHERE ';
+    query = 'SELECT * FROM ' + global + '`trip` WHERE ';
     query = query + "id_user = ? and status = ?";
     return db.run2(query, params).then(function (result) {
         return result;
@@ -154,7 +137,7 @@ function getFullCar(id_trip) {
     ];
     var arraytoReturn = [];
     var query3 = null;
-    query3 = 'SELECT * FROM `viajesporuser` WHERE ';
+    query3 = 'SELECT * FROM ' + global + '`viajesporuser` WHERE ';
     query3 = query3 + "id_trip =? and status = ?";
     return db.run2(query3, params).then(function (result) {
         return result;
@@ -172,7 +155,7 @@ function closeTrip(id_trip) {
     ];
     var arraytoReturn = [];
     var query3 = null;
-    query3 = "UPDATE  trip set status = 'CLOSE' WHERE id_trip = ?";
+    query3 = "UPDATE  " + global + "trip set status = 'CLOSE' WHERE id_trip = ?";
     return db.run2(query3, params).then(function (result) {
         return result;
     })

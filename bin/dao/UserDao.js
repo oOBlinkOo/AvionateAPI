@@ -5,11 +5,12 @@ var db = require("../services/dbProvider");
 // var passwordHash = require('password-hash');
 // var uuid = require('uuid');
 var ErrorModel_1 = require("../model/ErrorModel");
+var global = 'heroku_77555f6c6fe7654.';
 function checkCredentials(email, password) {
     var params = { email: email.toLowerCase() };
     var query = null;
     // query = 'select * from heroku_77555f6c6fe7654.usuarios where ?';
-    query = 'select * from usuarios where ?';
+    query = 'select * from ' + global + 'usuarios where ?';
     console.log(query, params);
     return db.run2(query, params).then(function (result) {
         console.log('ya porfavor ', result);
@@ -37,7 +38,7 @@ function createAccount(name, lastname, email, password) {
     ];
     var query = null;
     // INSERT INTO `usuarios` (`id_user`, `name`, `apellido`, `password`, `member_active`, `email`) VALUES (NULL, 'test', 'test', 'test', '1', 'test@gmail.com');
-    query = 'INSERT INTO `usuarios` (`id_user`, `name`, `lastname`, `password`, `member_active`, `email`)';
+    query = 'INSERT INTO ' + global + '`usuarios` (`id_user`, `name`, `lastname`, `password`, `member_active`, `email`)';
     query = query + 'VALUES  (null,?,?,?,?,?)';
     console.log("NO ENTIENDO", query);
     console.log(query, params);
@@ -70,7 +71,7 @@ function getUser(user_id) {
         user_id
     ];
     var query = null;
-    query = 'SELECT * FROM `usuarios` WHERE ';
+    query = 'SELECT * FROM ' + global + '`usuarios` WHERE ';
     query = query + "id_user =?";
     return db.run2(query, params).then(function (result) {
         console.log('result create trip', result);
@@ -95,7 +96,7 @@ function crearTarjeta(id_user, numeroTarjeta, vigencia, cvv) {
         cvv
     ];
     var query = null;
-    query = 'INSERT INTO `tarjeta` (`id_tarjeta`, `id_user`, `number_tarjeta`, `date_vigencia`, `cvv`)';
+    query = 'INSERT INTO ' + global + '`tarjeta` (`id_tarjeta`, `id_user`, `number_tarjeta`, `date_vigencia`, `cvv`)';
     query = query + 'VALUES  (null,?,?,?,?)';
     console.log(query, params);
     return db.run2(query, params).then(function (result) {
@@ -119,7 +120,7 @@ function getTarjeta(user_id) {
         user_id
     ];
     var query = null;
-    query = 'SELECT * FROM `tarjeta` WHERE ';
+    query = 'SELECT * FROM ' + global + '`tarjeta` WHERE ';
     query = query + "id_user =?";
     return db.run2(query, params).then(function (result) {
         console.log('result create trip', result);
@@ -145,7 +146,7 @@ function updateUser(id_user, name, lastname, pass) {
     ];
     var query = null;
     // query = 'select * from heroku_77555f6c6fe7654.usuarios where ?';
-    query = 'UPDATE usuarios set name = ? , lastname = ? , password = ? where id_user = ? ';
+    query = 'UPDATE ' + global + 'usuarios set name = ? , lastname = ? , password = ? where id_user = ? ';
     console.log(query, params);
     return db.run2(query, params).then(function (result) {
         console.log('ya porfavor ', result);
@@ -164,7 +165,7 @@ function activarCuenta(id_user, flag) {
     ];
     var query = null;
     // query = 'select * from heroku_77555f6c6fe7654.usuarios where ?';
-    query = 'UPDATE usuarios set member_active = ? where id_user = ? ';
+    query = 'UPDATE ' + global + 'usuarios set member_active = ? where id_user = ? ';
     console.log(query, params);
     return db.run2(query, params).then(function (result) {
         console.log('ya porfavor ', result);
@@ -182,7 +183,7 @@ function deleteTarjeta(user_id) {
         user_id
     ];
     var query = null;
-    query = 'DELETE FROM `tarjeta` WHERE ';
+    query = 'DELETE FROM ' + global + '`tarjeta` WHERE ';
     query = query + "id_user =?";
     return db.run2(query, params).then(function (result) {
         console.log('result create trip', result);
@@ -204,7 +205,7 @@ function getPicks(id_pick) {
         id_pick
     ];
     var query = null;
-    query = 'SELECT * FROM `pickup` WHERE ';
+    query = 'SELECT * FROM ' + global + '`pickup` WHERE ';
     query = query + "id_trip =?";
     return db.run2(query, params).then(function (result) {
         console.log('result create trip', result);
@@ -223,7 +224,7 @@ function getPicks(id_pick) {
 exports.getPicks = getPicks;
 function reservar(id_trip, id_user, id_pick, plaza, plazaUsuario) {
     var query = null;
-    query = 'SELECT * FROM `viajesporuser` WHERE ';
+    query = 'SELECT * FROM ' + global + '`viajesporuser` WHERE ';
     query = query + "id_trip =? and status = ?";
     var status = 'OPEN';
     var params = [
@@ -242,7 +243,7 @@ function reservar(id_trip, id_user, id_pick, plaza, plazaUsuario) {
                 plazaUsuario
             ];
             var query2 = null;
-            query2 = 'INSERT INTO `viajesporuser` (`id`, `id_trip`, `id_user`, `id_pick`, `status` ,`plazaOcupada`)';
+            query2 = 'INSERT INTO ' + global + '`viajesporuser` (`id`, `id_trip`, `id_user`, `id_pick`, `status` ,`plazaOcupada`)';
             query2 = query2 + 'VALUES  (null,?,?,?,?,?)';
             console.log('esta vacio2');
             return db.run2(query2, params2).then(function (result) {
@@ -277,7 +278,7 @@ function reservar(id_trip, id_user, id_pick, plaza, plazaUsuario) {
                 plazaUsuario
             ];
             var query3 = null;
-            query3 = 'INSERT INTO `viajesporuser` (`id`, `id_trip`, `id_user`, `id_pick`, `status` ,`plazaOcupada`)';
+            query3 = 'INSERT INTO ' + global + '`viajesporuser` (`id`, `id_trip`, `id_user`, `id_pick`, `status` ,`plazaOcupada`)';
             query3 = query3 + 'VALUES  (null,?,?,?,?,?)';
             return db.run2(query3, params3).then(function (result) {
                 return result;
