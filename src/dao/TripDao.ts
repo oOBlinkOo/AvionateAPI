@@ -131,8 +131,8 @@ export function  getList(source:string,destino:string,timestart:string,tiemeend:
        var arraytoReturn=[];
 var query :string = null;
    query = 'SELECT * FROM '+global+'`trip` WHERE ';
-   // query = query+"source=? and destino = ? and status='OPEN' and hora< ? and hora> ? and plaza = ?";
-   query = query+"source=? and destino = ? and status='OPEN' and hora< ? and hora> ? ";
+   query = query+"source=? and destino = ? and status='OPEN' and hora< ? and hora> ? and plaza = ?";
+   // query = query+"source=? and destino = ? and status='OPEN' and hora< ? and hora> ? ";
   return db.run2(query,params).then(result => {
     return result;
 
